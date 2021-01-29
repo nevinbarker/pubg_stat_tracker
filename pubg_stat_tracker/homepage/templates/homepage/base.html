@@ -21,12 +21,16 @@
                 <div class="navbar-nav mr-auto">
                   <a class="nav-item nav-link text-white" href="{% url 'homepage' %}">Home</a>
                   <a class="nav-item nav-link text-white" href="#">Stats</a>
-                  <a class="nav-item nav-link text-white" href="#">Account Settings</a>
+                  <a class="nav-item nav-link text-white" href="{% url 'userlogin-profile' %}">Profile</a>
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
-                  <a class="nav-item nav-link text-white" href="{% url 'userlogin-login' %}">Login</a>
-                  <a class="nav-item nav-link text-white" href="{% url 'userlogin-register' %}">Register</a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-item nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a class="nav-item nav-link text-white" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link text-white" href="{% url 'userlogin-register' %}">Register</a>
+                    {% endif %}
                 </div>
               </div>
             </div>
