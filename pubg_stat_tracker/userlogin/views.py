@@ -1,12 +1,23 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render, redirect
+from .forms import UserRegisterForm
+from django.contrib import messages
 
 
-def index(request):
-    template = loader.get_template('userlogin/index.html')
-    context = {
-        'username': 'password'
-    }
-    return HttpResponse(template.render(context, request))
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}')
+            return redirect('homepage')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'userlogin/register.html', {'form': form})
+
+
+def login(request):
+    return render(request, 'userlogin/login.html')
+
+
 
