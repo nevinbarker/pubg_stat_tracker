@@ -1,0 +1,15 @@
+{% extends "homepage/base.html" %}
+
+{% block content %}
+    <h1>Stats for {{playerName}}</h1>
+    <div class="container">
+        <select class="btn btn-mini mt-2">
+            <option disabled selected hidden>Filter by Stat</option>
+            <option value="1">Kills/Deaths</option>
+            <option value="2">Damage</option>
+            <option value="3">Time Alive</option>
+        </select>
+    </div>
+
+
+{% endblock content %}
