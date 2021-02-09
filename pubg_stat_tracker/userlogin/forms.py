@@ -21,6 +21,8 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    pubgUsername = forms.CharField(required=False, label='PUBG Username')
+
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['pubgUsername', 'image']
