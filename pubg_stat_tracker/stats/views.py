@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 import requests
+from django.views.generic.list import ListView
+from .models import Stats
 
 
 @login_required
@@ -28,6 +30,10 @@ def stats(request):
         'playerName': context['data'][0]['attributes']['name']
     })
 
+
+class StatsListView(ListView):
+    model = Stats
+    template_name = 'stats/stats.html'
 
 # pubg api key:
 # eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNGFiYTExMC00YjIyLTAxMzktZmU3YS0wZDExNzBkZGYxZjMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjEyNjY4NzE3LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymdfc3RhdF90cmFjIn0.sKeF4EzTsxy714VEaWY5n19j35vsJvH15gTzBb7cmH0
