@@ -12,16 +12,15 @@
         </select>
     </div>
     <div class="container">
-        <ul>
-            {% for stat in stats %}
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            {$ endfor $}
-        </ul>
+            <ul>
+                <li>Total matches played: {{ stats.totalMatches }}</li>
+                <li>Total kills: {{ stats.kills }}</li>
+                <li>Total deaths: {{ stats.deaths }}</li>
+                <li>Total damage: {{ stats.damage }}</li>
+                <li> Total DBNOs: {{ stats.dbno }}</li>
+                <li>Total revives: {{ stats.revives }}</li>
+                <li>Average time alive: {{ stats.timeAlive }}</li>
+            </ul>
     </div>
 
 {% endblock content %}

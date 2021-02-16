@@ -55,12 +55,41 @@ def stats(request):
                                     )
                                     # print(participant["attributes"]["stats"])
     baseStats = Stats.objects.all()
+
+    kills = 0
+    deaths = 0
+    damage = 0
+    dbno = 0
+    revives = 0
+    timeAlive = 0
+
     for stat in baseStats:
-        kills = kills + stat['kills']
+        kills = kills + stat.kills
+        if stat.deathType == 'alive':
+            pass
+        else:
+            deaths = deaths + 1
+        damage = damage + stat.damage
+        dbno = dbno + stat.dbno
+        revives = revives + stat.revives
+        timeAlive = timeAlive + stat.timeAlive
+
+    timeAlive = timeAlive / len(baseStats)
+    totalMatches = len(baseStats)
+
+    totalStats = {
+        "totalMatches": totalMatches,
+        "kills": kills,
+        "deaths": deaths,
+        "damage": damage,
+        "dbno": dbno,
+        "revives": revives,
+        "timeAlive": timeAlive
+    }
 
     return render(request, 'stats/stats.html', {
         'playerName': pubgUsername,
-        'stats': baseStats
+        'stats': totalStats
     })
 
 
