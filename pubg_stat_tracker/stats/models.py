@@ -3,9 +3,9 @@ from django.db import models
 
 class Stats(models.Model):
 
-    matchId = models.IntegerField()
+    matchId = models.CharField(max_length=50, blank=True)
     kills = models.IntegerField()
-    deaths = models.IntegerField()
+    deathType = models.CharField(max_length=12, blank=True)
     damage = models.IntegerField()
     dbno = models.IntegerField()
     revives = models.IntegerField()

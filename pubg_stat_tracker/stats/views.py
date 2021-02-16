@@ -32,18 +32,35 @@ def stats(request):
             else:
                 for match in matches:
                     matchId = match['id']
-
+                    # print(matchId)
                     if Stats.objects.filter(matchId=matchId).exists():
                         pass
                     else:
-                        response = requests.get(f'https://api.pubg.com/shards/steam/matches/{matchId}')
+                        response = requests.get(f'https://api.pubg.com/shards/steam/matches/{matchId}', headers=header)
                         r = response.json()
-                        Stats.objects.create(
-                            matchId=matchId,
-                        )
+                        # print(r)
+                        participantList = r["included"]
+                        for participant in participantList:
+                            if participant["type"] == "participant":
+                                if participant["attributes"]["stats"]["name"] == pubgUsername:
+                                    Stats.objects.create(
+                                        matchId=matchId,
+                                        kills=participant["attributes"]["stats"]["kills"],
+                                        deathType=participant["attributes"]["stats"]["deathType"],
+                                        damage=participant["attributes"]["stats"]["damageDealt"],
+                                        dbno=participant["attributes"]["stats"]["DBNOs"],
+                                        revives=participant["attributes"]["stats"]["revives"],
+                                        timeAlive=participant["attributes"]["stats"]["timeSurvived"],
+                                        user=request.user.profile
+                                    )
+                                    # print(participant["attributes"]["stats"])
+    baseStats = Stats.objects.all()
+    for stat in baseStats:
+        kills = kills + stat['kills']
 
     return render(request, 'stats/stats.html', {
-        'playerName': pubgUsername
+        'playerName': pubgUsername,
+        'stats': baseStats
     })
 
 
