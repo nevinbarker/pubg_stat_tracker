@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zge$5_tw-zem75%pn*-6asht^%ugwc@^-ee9+%nn@(=6a8f8-!'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'pubg_stat_tracker',
         'USER': 'root',
-        'PASSWORD': '76Trombones!',
+        'PASSWORD': os.environ.get('DB_PASS'),
         'OPTIONS': {
             'autocommit': True
         }

@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 import requests
-from django.views.generic.list import ListView
 from .models import Stats
 from django.contrib import messages
+import os
 
 
 @login_required
 def stats(request):
     header = {
-        "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNGFiYTExMC00YjIyLTAxMzktZmU3YS0wZDExNzBkZGYxZjMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjEyNjY4NzE3LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymdfc3RhdF90cmFjIn0.sKeF4EzTsxy714VEaWY5n19j35vsJvH15gTzBb7cmH0",
+        "Authorization": f'Bearer {os.environ.get("PUBG_API_TOKEN")}',
         "Accept": "application/vnd.api+json"
     }
     pubgUsername = request.user.profile.pubgUsername
@@ -33,7 +33,7 @@ def stats(request):
                 for match in matches:
                     matchId = match['id']
                     # print(matchId)
-                    if Stats.objects.filter(matchId=matchId).exists():
+                    if Stats.objects.filter(matchId=matchId).filter(user_id=request.user.profile).exists():
                         pass
                     else:
                         response = requests.get(f'https://api.pubg.com/shards/steam/matches/{matchId}', headers=header)
@@ -54,7 +54,7 @@ def stats(request):
                                         user=request.user.profile
                                     )
                                     # print(participant["attributes"]["stats"])
-    baseStats = Stats.objects.all()
+    baseStats = Stats.objects.filter(user_id=request.user.profile)
 
     kills = 0
     deaths = 0
@@ -92,10 +92,5 @@ def stats(request):
         'stats': totalStats
     })
 
-
-class StatsListView(ListView):
-    model = Stats
-    template_name = 'stats/stats.html'
-
-# pubg api key:
-# eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNGFiYTExMC00YjIyLTAxMzktZmU3YS0wZDExNzBkZGYxZjMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjEyNjY4NzE3LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymdfc3RhdF90cmFjIn0.sKeF4EzTsxy714VEaWY5n19j35vsJvH15gTzBb7cmH0
+# django background tasks
+# matplotlib
