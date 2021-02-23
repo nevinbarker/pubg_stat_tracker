@@ -4,6 +4,7 @@ import requests
 from .models import Stats
 from django.contrib import messages
 import os
+from . import utils
 
 
 @login_required
@@ -32,13 +33,13 @@ def stats(request):
             else:
                 for match in matches:
                     matchId = match['id']
-                    # print(matchId)
+
                     if Stats.objects.filter(matchId=matchId).filter(user_id=request.user.profile).exists():
                         pass
                     else:
                         response = requests.get(f'https://api.pubg.com/shards/steam/matches/{matchId}', headers=header)
                         r = response.json()
-                        # print(r)
+
                         participantList = r["included"]
                         for participant in participantList:
                             if participant["type"] == "participant":
@@ -53,7 +54,7 @@ def stats(request):
                                         timeAlive=participant["attributes"]["stats"]["timeSurvived"],
                                         user=request.user.profile
                                     )
-                                    # print(participant["attributes"]["stats"])
+
     baseStats = Stats.objects.filter(user_id=request.user.profile)
 
     kills = 0
@@ -87,9 +88,19 @@ def stats(request):
         "timeAlive": timeAlive
     }
 
+    x_totalMatches = []
+    for i in range(len(baseStats)):
+        x_totalMatches.append(i + 1)
+
+    y_kills = [y.kills for y in baseStats]
+
+    y_damage = [y.damage for y in baseStats]
+
     return render(request, 'stats/stats.html', {
         'playerName': pubgUsername,
-        'stats': totalStats
+        'stats': totalStats,
+        'graph_kills_per_match': utils.get_plot(x_totalMatches, y_kills, 'Number of matches', 'Number of kills', 'Kills per match'),
+        'graph_damage_per_match': utils.get_plot(x_totalMatches, y_damage, 'Number of matches', 'Ammount of damage', 'Damage per match')
     })
 
 # django background tasks

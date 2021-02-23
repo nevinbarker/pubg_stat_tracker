@@ -4,7 +4,7 @@
     <h1>Stats for {{playerName}}</h1>
 
     <div class="container">
-        <select class="btn btn-mini mt-2">
+        <select class="btn btn-mini mt-2" id="graph_sel">
             <option disabled selected hidden>Filter by Stat</option>
             <option value="1">Kills/Deaths</option>
             <option value="2">Damage</option>
@@ -21,6 +21,9 @@
                 <li>Total revives: {{ stats.revives }}</li>
                 <li>Average time alive: {{ stats.timeAlive }}</li>
             </ul>
+    </div>
+    <div class="container mt-3 mb-3">
+        <img src="data:image/png;base64, {{ graph_damage_per_match|safe }}" alt="" class="img-responsive">
     </div>
 
 {% endblock content %}
