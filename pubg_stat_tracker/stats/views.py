@@ -5,6 +5,7 @@ from .models import Stats
 from django.contrib import messages
 import os
 from . import utils
+from .utils import background_api_call
 
 
 @login_required
@@ -85,7 +86,8 @@ def stats(request):
         "damage": damage,
         "dbno": dbno,
         "revives": revives,
-        "timeAlive": timeAlive
+        "timeAlive": timeAlive,
+        "KDR": kills/deaths
     }
 
     x_totalMatches = []
@@ -96,12 +98,15 @@ def stats(request):
 
     y_damage = [y.damage for y in baseStats]
 
+    y_time_alive = [y.timeAlive for y in baseStats]
+
     return render(request, 'stats/stats.html', {
         'playerName': pubgUsername,
         'stats': totalStats,
         'graph_kills_per_match': utils.get_plot(x_totalMatches, y_kills, 'Number of matches', 'Number of kills', 'Kills per match'),
-        'graph_damage_per_match': utils.get_plot(x_totalMatches, y_damage, 'Number of matches', 'Ammount of damage', 'Damage per match')
+        'graph_damage_per_match': utils.get_plot(x_totalMatches, y_damage, 'Number of matches', 'Amount of damage', 'Damage per match'),
+        'graph_time_alive_per_match': utils.get_plot(x_totalMatches, y_time_alive, 'Number of matches', 'Time alive in seconds', 'Time alive per match')
     })
 
-# django background tasks
-# matplotlib
+
+background_api_call(repeat=60)

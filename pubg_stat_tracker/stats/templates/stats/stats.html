@@ -1,4 +1,5 @@
-{% extends "homepage/base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     <h1>Stats for {{playerName}}</h1>
@@ -6,9 +7,9 @@
     <div class="container">
         <select class="btn btn-mini mt-2" id="graph_sel">
             <option disabled selected hidden>Filter by Stat</option>
-            <option value="1">Kills/Deaths</option>
-            <option value="2">Damage</option>
-            <option value="3">Time Alive</option>
+            <option value="1">Kills per match</option>
+            <option value="2">Damage per match</option>
+            <option value="3">Time Alive per match</option>
         </select>
     </div>
     <div class="container">
@@ -20,10 +21,22 @@
                 <li> Total DBNOs: {{ stats.dbno }}</li>
                 <li>Total revives: {{ stats.revives }}</li>
                 <li>Average time alive: {{ stats.timeAlive }}</li>
+                <li>Kill Death Ratio: {{ stats.KDR }}</li>
             </ul>
-    </div>
-    <div class="container mt-3 mb-3">
-        <img src="data:image/png;base64, {{ graph_damage_per_match|safe }}" alt="" class="img-responsive">
     </div>
 
 {% endblock content %}
+{% block extra_js %}
+    <script>
+        let graphDmgPerMatch = "{{ graph_damage_per_match|safe }}"
+        let graphKillsPerMatch = "{{ graph_kills_per_match|safe }}"
+        let graphTimeAlivePerMatch = "{{ graph_time_alive_per_match|safe }}"
+    </script>
+
+    <script src="{% static 'app.js' %}" type="text/javascript" defer></script>
+
+    <div class="container mt-3 mb-3 d-none" id="graphDiv">
+        <img src="data:image/png;base64, {{ graph_damage_per_match|safe }}" alt="" class="img-responsive" id="graph">
+    </div>
+
+{% endblock extra_js %}
