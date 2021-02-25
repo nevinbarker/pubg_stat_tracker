@@ -5,7 +5,7 @@ from .models import Stats
 from django.contrib import messages
 import os
 from . import utils
-from .utils import background_api_call
+from .tasks import background_api_call
 
 
 @login_required
@@ -78,6 +78,11 @@ def stats(request):
 
     timeAlive = timeAlive / len(baseStats)
     totalMatches = len(baseStats)
+    kdr = 0
+    if deaths == 0:
+        kdr = 0
+    else:
+        kdr = kills/deaths
 
     totalStats = {
         "totalMatches": totalMatches,
@@ -87,7 +92,7 @@ def stats(request):
         "dbno": dbno,
         "revives": revives,
         "timeAlive": timeAlive,
-        "KDR": kills/deaths
+        "KDR": kdr
     }
 
     x_totalMatches = []
