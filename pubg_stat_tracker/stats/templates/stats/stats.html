@@ -36,7 +36,7 @@
     <script src="{% static 'app.js' %}" type="text/javascript" defer></script>
 
     <div class="container mt-3 mb-3 d-none" id="graphDiv">
-        <img src="data:image/png;base64, {{ graph_damage_per_match|safe }}" alt="" class="img-responsive" id="graph">
+        <img src="data:image/jpg;base64, {{ graph_damage_per_match|safe }}" alt="graph" class="img-responsive" id="graph">
     </div>
 
 {% endblock extra_js %}

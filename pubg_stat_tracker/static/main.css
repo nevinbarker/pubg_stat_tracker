@@ -82,3 +82,17 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+@media screen and (max-width: 632px) {
+  #graph { width: 300px;}
+}
+
+@media screen and (max-width: 320px) {
+  #graph { width: 260px;}
+}
+
+#graph { height: auto; }
+
+@media screen and (max-width: 632px) {
+  #profile-pic { flex-direction: column; }
+}
