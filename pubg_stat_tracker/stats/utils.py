@@ -6,10 +6,10 @@ import base64
 
 def get_graph():
     buffer = BytesIO()
-    plt.savefig(buffer, format='png')
+    plt.savefig(buffer, format='jpg')
     buffer.seek(0)
-    image_png = buffer.getvalue()
-    graph = base64.b64encode(image_png)
+    image_jpg = buffer.getvalue()
+    graph = base64.b64encode(image_jpg)
     graph = graph.decode('utf-8')
     buffer.close()
     return graph

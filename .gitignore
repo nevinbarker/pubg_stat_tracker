@@ -1,13 +1,14 @@
 /venv/
 .env
-/staticfiles
-/media
+staticfiles
+static
+media
+db.sqlite3
 *.pyc
 *.pot
 *.py[co]
 .tox/
 __pycache__
-MANIFEST
 dist/
 docs/_build/
 docs/locale/
@@ -27,9 +28,7 @@ tests/report/
 .idea/**/dynamic.xml 
 .idea/**/uiDesigner.xml 
 .idea/**/gradle.xml 
-.idea/**/libraries 
-*.iws /out/
-.Python build/ 
+.idea/**/libraries
 develop-eggs/ 
 dist/ 
 downloads/ 

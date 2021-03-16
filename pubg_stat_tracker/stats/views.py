@@ -3,15 +3,18 @@ from django.contrib.auth.decorators import login_required
 import requests
 from .models import Stats
 from django.contrib import messages
+import json
 import os
 from . import utils
-from .tasks import background_api_call
+# from .tasks import background_api_call
 
+with open('/etc/config.json') as config_file:
+    config = json.load(config_file)
 
 @login_required
 def stats(request):
     header = {
-        "Authorization": f'Bearer {os.environ.get("PUBG_API_TOKEN")}',
+        "Authorization": f'Bearer {config["PUBG_API_TOKEN"]}',
         "Accept": "application/vnd.api+json"
     }
     pubgUsername = request.user.profile.pubgUsername
@@ -75,8 +78,10 @@ def stats(request):
         dbno = dbno + stat.dbno
         revives = revives + stat.revives
         timeAlive = timeAlive + stat.timeAlive
-
-    timeAlive = timeAlive / len(baseStats)
+    if len(baseStats) > 0:
+        timeAlive = timeAlive / len(baseStats)
+    else:
+        timeAlive = 0
     totalMatches = len(baseStats)
     kdr = 0
     if deaths == 0:
@@ -114,4 +119,4 @@ def stats(request):
     })
 
 
-background_api_call(repeat=60)
+# background_api_call(repeat=60)
